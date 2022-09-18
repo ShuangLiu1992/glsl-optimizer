@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 
+include(conanbuildinfo.cmake)
+conan_basic_setup()
+add_compile_options("-fno-strict-aliasing")
+
 include_directories(include)
 include_directories(src/mesa)
 include_directories(src/mapi)
@@ -49,3 +53,12 @@ target_link_libraries(glslopt glsl_optimizer)
 
 #add_executable(glcpp src/glsl/glcpp/glcpp.c)
 #target_link_libraries(glcpp glsl_optimizer)
+
+set_target_properties(glsl_optimizer PROPERTIES PUBLIC_HEADER "src/glsl/glsl_optimizer.h")
+install(TARGETS glcpp-library mesa glsl_optimizer 
+  RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/glsl_optimizer/
+  )
