@@ -838,9 +838,9 @@ builtin_variable_generator::generate_vs_special_vars()
       add_system_value(SYSTEM_VALUE_INSTANCE_ID, int_t, "gl_InstanceIDEXT", glsl_precision_high);
    if (state->ARB_draw_instanced_enable || state->is_version(140, 300))
 	   add_system_value(SYSTEM_VALUE_INSTANCE_ID, state->metal_target ? uint_t : int_t, "gl_InstanceID", glsl_precision_high);
-   if (state->AMD_vertex_shader_layer_enable)
+   if (state->AMD_vertex_shader_layer_enable || state->ARB_shader_viewport_layer_array_enable)
       add_output(VARYING_SLOT_LAYER, int_t, "gl_Layer", glsl_precision_high);
-   if (state->AMD_vertex_shader_viewport_index_enable)
+   if (state->AMD_vertex_shader_viewport_index_enable || state->ARB_shader_viewport_layer_array_enable)
       add_output(VARYING_SLOT_VIEWPORT, int_t, "gl_ViewportIndex", glsl_precision_high);
    if (compatibility) {
       add_input(VERT_ATTRIB_POS, vec4_t, "gl_Vertex", glsl_precision_high);
@@ -949,6 +949,13 @@ builtin_variable_generator::generate_fs_special_vars()
 			add_input(VARYING_SLOT_VAR0, array(vec4_t, state->Const.MaxDrawBuffers), "gl_LastFragData", glsl_precision_medium);
 		if (state->EXT_shader_framebuffer_fetch_warn)
 			var->enable_extension_warning("GL_EXT_shader_framebuffer_fetch");
+	}
+
+	{
+		// BK - gl_PrimitiveID
+		ir_variable *var;
+		var = add_output(VARYING_SLOT_PRIMITIVE_ID, int_t, "gl_PrimitiveID", glsl_precision_high);
+		var->data.interpolation = INTERP_QUALIFIER_FLAT;
 	}
 
    if (state->ARB_sample_shading_enable) {
