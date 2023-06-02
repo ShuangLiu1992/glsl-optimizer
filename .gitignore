@@ -62,7 +62,6 @@ xcuserdata
 *.xcworkspace
 
 cmake_install.cmake
-Makefile
 CMakeFiles/
 CMakeCache.txt
 .project
@@ -74,5 +73,5 @@ glsl_compiler
 .settings/
 .pydevproject
 
-build
 metalTemp.metal
+/CMakeUserPresets.json
