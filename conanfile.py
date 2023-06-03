@@ -17,6 +17,9 @@ class GLSL_OPTIMIZERConan(ConanFile):
     def requirements(self):
         self.requires(f"spirv_tools/{self.version}@")
 
+    def export_sources(self):
+        conan.tools.files.copy(self, "*", self.recipe_folder, self.export_sources_folder)
+
     def generate(self):
         if self.settings.compiler == "gcc":
             self.conf.define("tools.build:cxxflags", ["-fno-strict-aliasing"])
